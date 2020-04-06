@@ -15,6 +15,7 @@ public class LoginView {
         setupComponents();
     }
 
+    // View UI Construction
     private void setupComponents() {
         // Initializing Propeties/Views
         usernameField = new JTextField(16);
@@ -81,7 +82,7 @@ public class LoginView {
         panel.add(registerButton);
         return panel;
     }
-    // Adding the listeners
+    // Listener setters
     void addLoginListener(ActionListener listener) {
         loginButton.addActionListener(listener);
     }
@@ -89,6 +90,11 @@ public class LoginView {
         registerButton.addActionListener(listener);
     }
 
+    // Value Getters
+    String getUsernameInput() { return usernameField.getText(); }
+    char[] getPasswordInput() { return passwordField.getPassword(); }
+
+    // View Methods
     void show() {
         frame.pack();
         frame.setVisible(true);
