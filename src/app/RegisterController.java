@@ -8,7 +8,12 @@ public class RegisterController {
 
     RegisterController(RegisterView view) {
         this.view = view;
+        setupListeners();
+    }
 
+    void setupListeners() {
+        view.addRegisterListener(new RegisterButtonListener());
+        view.addCancelListener(new CancelButtonListener());
     }
 
     static class RegisterButtonListener implements ActionListener {
