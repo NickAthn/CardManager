@@ -1,19 +1,29 @@
 package app;
 
+import app.service.Authenticator;
+import app.service.InformationShow;
+
 import java.awt.event.*;
 
-public class LoginController {
-    private  LoginView view;
+public class LoginController implements InformationShow {
+    private LoginView view;
+    private Authenticator authenticator;
 
     LoginController(LoginView view) {
         this.view = view;
+        this.authenticator = new Authenticator(this);
         view.addLoginListener(new LoginButtonListener());
         view.addRegisterListener(new RegisterButtonListener());
     }
 
-    static class LoginButtonListener implements  ActionListener {
+    public void showMessage(String message, String title) {
+        view.showMessage(message, title);
+    }
+
+    class LoginButtonListener implements  ActionListener {
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Login Button Pressed");
+            // TODO: Change password implementation
+            authenticator.loginWith(view.getUsernameInput(),new String(view.getPasswordInput()));
         }
     }
 

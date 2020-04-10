@@ -103,4 +103,9 @@ public class LoginView {
     void dispose() {
         frame.dispose();
     }
+
+    public void showMessage(String message, String titleBar) {
+        JOptionPane.showMessageDialog(null, message, titleBar, JOptionPane.INFORMATION_MESSAGE);
+    }
+
 }

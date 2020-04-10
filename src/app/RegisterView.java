@@ -80,12 +80,16 @@ public class RegisterView {
     char[] getPasswordInput() { return passwordField.getPassword(); }
 
     // View Methods
-    void show() {
+    public void show() {
         frame.pack();
         frame.setVisible(true);
     }
 
-    void dispose() {
+    public void dispose() {
         frame.dispose();
+    }
+
+    public void showMessage(String message, String titleBar) {
+        JOptionPane.showMessageDialog(null, message, titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
 }
