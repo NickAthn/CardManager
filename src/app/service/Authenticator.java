@@ -1,7 +1,6 @@
 package app.service;
 
 import app.model.User;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
@@ -26,7 +25,7 @@ public class Authenticator {
                 }
             }
         });
-        if (shouldLogin.get() == false) {
+        if (!shouldLogin.get()) {
             showMessage("Wrong username or password", "Failed Login");
         }
         return  shouldLogin.get();
@@ -34,7 +33,7 @@ public class Authenticator {
     // Registers a new user
     public void registerUser(User user) {
         ArrayList<User> userList = getUsers();
-        if (isUsernameAvailable(user.username) == false) {
+        if (!isUsernameAvailable(user.username)) {
             showMessage("Username already exists!", "Username Error");
         } else {
             userList.add(user);
@@ -52,7 +51,7 @@ public class Authenticator {
             return storage.readUsers();
         } catch (IOException e) {
             // If file is not found return an empty array
-            return new ArrayList<User>();
+            return new ArrayList<>();
         }
     }
 
