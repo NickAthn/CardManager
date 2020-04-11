@@ -8,22 +8,24 @@ public class CardController {
 
     CardController(CardView view) {
         this.view = view;
-        view.addLoginListener(new LoginController.LoginButtonListener());
-        view.addRegisterListener(new LoginController.RegisterButtonListener());
+        setupListeners();
     }
 
-    static class LoginButtonListener implements ActionListener {
+    void setupListeners() {
+        view.addAddListener(new AddButtonListener());
+        view.addBackListener(new BackButtonListener());
+    }
+
+    static class AddButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             System.out.println("Login Button Pressed");
         }
     }
 
-    static  class RegisterButtonListener implements  ActionListener {
-        public void actionPerformed(ActionEvent e) { // Upon register button press show registerView
-            RegisterView view = new RegisterView();
-            RegisterController controller = new RegisterController(view);
-            view.show();
+    class BackButtonListener implements  ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            view.dispose();
         }
     }
 }
-}
+

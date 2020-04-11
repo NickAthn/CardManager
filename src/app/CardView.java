@@ -4,6 +4,10 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Properties;
 
 public class CardView {
 
@@ -39,8 +43,31 @@ public class CardView {
         gc.gridx = 0;
         gc.gridy = 0;
         frame.add(createAddPanel(), gc);
-        //gc.gridy++;
 
+
+    }
+
+    //function which is able to present correctly the selected Date
+    private static class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
+        private String datePattern = "MM-yyyy";
+        private SimpleDateFormat dateFormatter;
+
+        private DateLabelFormatter() {
+            this.dateFormatter = new SimpleDateFormat(this.datePattern);
+        }
+
+        public Object stringToValue(String text) throws ParseException {
+            return this.dateFormatter.parseObject(text);
+        }
+
+        public String valueToString(Object value) throws ParseException {
+            if (value != null) {
+                Calendar cal = (Calendar)value;
+                return this.dateFormatter.format(cal.getTime());
+            } else {
+                return "";
+            }
+        }
     }
 
     private JPanel createAddPanel() {
@@ -72,7 +99,15 @@ public class CardView {
         gc.gridy = 2;
         panel.add(new JLabel("Date Exp. :"), gc);
         gc.gridx = 1;
-        panel.add(carduserField, gc);
+/*
+        UtilDateModel model = new UtilDateModel();
+        Properties p = new Properties();
+        p.put("text.today", "Today");
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
+        JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new CardView.DateLabelFormatter());*/
+        //panel.add(datePicker, gc);
 
         // Setting password field and label
         gc.gridx = 0;
@@ -81,10 +116,12 @@ public class CardView {
         gc.gridx = 1;
         panel.add(cvcField, gc);
 
-        gc.gridx = 0;
+        gc.gridx = 1;
         gc.gridy = 4;
-        gc.gridwidth = 4;
         panel.add(AddButton, gc);
+        gc.gridx = 0;
+        panel.add(backButton, gc);
+
 
         return panel;
     }
