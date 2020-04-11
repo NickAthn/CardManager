@@ -3,14 +3,24 @@ package app.service;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.math.BigInteger;
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 
 
 public class Cryptographer {
 
+    void generateRSAkeyPair() throws NoSuchAlgorithmException {
+        KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+        kpg.initialize(2048);
+        KeyPair kp = kpg.generateKeyPair();
+        Key pub = kp.getPublic();
+        Key pvt = kp.getPrivate();
+
+    }
     /**
      * Hash a password for storage.
      * Password hashing is done using PBKDF2 as it still considered a more robust option over older (SHA-512, MD5) implementations
@@ -101,6 +111,4 @@ public class Cryptographer {
         }
         return bytes;
     }
-
-
 }
