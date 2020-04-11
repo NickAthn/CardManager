@@ -97,6 +97,7 @@ public class LoginView {
     // View Methods
     void show() {
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 

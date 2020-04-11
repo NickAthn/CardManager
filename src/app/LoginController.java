@@ -23,7 +23,7 @@ public class LoginController implements InformationShow {
     class LoginButtonListener implements  ActionListener {
         public void actionPerformed(ActionEvent e) {
             // TODO: Change password implementation
-            authenticator.loginWith(view.getUsernameInput(),new String(view.getPasswordInput()));
+            authenticator.loginWith(view.getUsernameInput(),view.getPasswordInput());
         }
     }
 

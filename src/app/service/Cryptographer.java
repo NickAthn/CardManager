@@ -15,39 +15,50 @@ public class Cryptographer {
      * Hash a password for storage.
      * Password hashing is done using PBKDF2 as it still considered a more robust option over older (SHA-512, MD5) implementations
      *
-     * @return a secure authentication token to be stored for later authentication
+     * @return a secure authentication token to be stored for later authentication. Contains number of iterations and the salt used
      */
     String hash(char[] password) {
         try {
             byte[] salt = getSalt();
-            KeySpec spec = new PBEKeySpec(password, salt, 65536, 128);
+            int iterations = 65536;
+
+            PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, 64 * 8);
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 
             byte[] hash = factory.generateSecret(spec).getEncoded();
 
-            return toHex(hash);
+            return iterations + ":" + toHex(salt) + ":" + toHex(hash);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    static boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String[] parts = storedPassword.split(":");
-        int iterations = Integer.parseInt(parts[0]);
-        byte[] salt = fromHex(parts[1]);
-        byte[] hash = fromHex(parts[2]);
+    /**
+     * Authenticate with a password and a stored password token.
+     *
+     * @return true if the password and token match
+     */
+    public static boolean validatePassword(char[] originalPassword, String storedPassword) {
+        try {
+            String[] parts = storedPassword.split(":");
+            int iterations = Integer.parseInt(parts[0]);
+            byte[] salt = fromHex(parts[1]);
+            byte[] hash = fromHex(parts[2]);
 
-        PBEKeySpec spec = new PBEKeySpec(originalPassword.toCharArray(), salt, iterations, hash.length * 8);
-        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        byte[] testHash = skf.generateSecret(spec).getEncoded();
+            PBEKeySpec spec = new PBEKeySpec(originalPassword, salt, iterations, hash.length * 8);
+            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            byte[] testHash = skf.generateSecret(spec).getEncoded();
 
-        int diff = hash.length ^ testHash.length;
-        for(int i = 0; i < hash.length && i < testHash.length; i++)
-        {
-            diff |= hash[i] ^ testHash[i];
+            int diff = hash.length ^ testHash.length;
+            for (int i = 0; i < hash.length && i < testHash.length; i++) {
+                diff |= hash[i] ^ testHash[i];
+            }
+            return diff == 0;
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+            return false;
         }
-        return diff == 0;
     }
 
     /**

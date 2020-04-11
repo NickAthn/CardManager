@@ -30,7 +30,7 @@ public class RegisterController implements InformationShow {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             // TODO: Change Password implementation
-            authenticator.registerUser(new User(view.getUsernameInput(),new String(view.getPasswordInput()),view.getNameInput(),view.getEmailInput()));
+            authenticator.registerUser(view.getNameInput(),view.getEmailInput(),view.getUsernameInput(),view.getPasswordInput());
         }
     }
     class CancelButtonListener implements ActionListener {
