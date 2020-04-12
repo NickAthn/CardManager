@@ -13,7 +13,7 @@ public class CardView {
 
     private JFrame frame;
     private JTextField cardnumberField, carduserField;
-    private JPasswordField cvcField;
+    private JTextField cvcField, typeField;
     private JButton AddButton, backButton;
 
     public CardView() {
@@ -25,7 +25,8 @@ public class CardView {
         // Initializing Propeties/Views
         cardnumberField = new JTextField(16);
         carduserField = new JTextField(16);
-        cvcField = new JPasswordField(16);
+        cvcField = new JTextField(16);
+        typeField = new JTextField(16);
 
         AddButton = new JButton("Add");
         backButton = new JButton("Home");
@@ -80,21 +81,21 @@ public class CardView {
         gc.fill = GridBagConstraints.HORIZONTAL;
         gc.insets = new Insets(5, 5, 5, 5);
 
-        // Setting username field and label
+        // Setting card number field and label
         gc.gridx = 0;
         gc.gridy = 0;
         panel.add(new JLabel("Card Number:"), gc);
         gc.gridx = 1;
         panel.add(cardnumberField, gc);
 
-        // Setting password field and label
+        // Setting card user field and label
         gc.gridx = 0;
         gc.gridy = 1;
         panel.add(new JLabel("Card User:"), gc);
         gc.gridx = 1;
         panel.add(carduserField, gc);
 
-        // Setting password field and label
+        // Setting date field and label
         gc.gridx = 0;
         gc.gridy = 2;
         panel.add(new JLabel("Date Exp. :"), gc);
@@ -109,15 +110,23 @@ public class CardView {
         JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new CardView.DateLabelFormatter());*/
         //panel.add(datePicker, gc);
 
-        // Setting password field and label
+        // Setting cvc field and label
         gc.gridx = 0;
         gc.gridy = 3;
         panel.add(new JLabel("CVC:"), gc);
         gc.gridx = 1;
         panel.add(cvcField, gc);
 
-        gc.gridx = 1;
+        // Setting type field and label
+        gc.gridx = 0;
         gc.gridy = 4;
+        panel.add(new JLabel("Type:"), gc);
+        gc.gridx = 1;
+        panel.add(typeField, gc);
+
+        //Setting
+        gc.gridx = 1;
+        gc.gridy = 5;
         panel.add(AddButton, gc);
         gc.gridx = 0;
         panel.add(backButton, gc);
