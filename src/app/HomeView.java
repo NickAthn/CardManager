@@ -85,11 +85,18 @@ public class HomeView {
     void addAddListener(ActionListener listener) {
         AddButton.addActionListener(listener);
     }
-
-
-    // Value Getters
-    //String getCardNumInput() { return usernameField.getText(); }
-    //String getCardUserInput() { return passwordField.getPassword(); }
+    void addEditListener(ActionListener listener) {
+        EditButton.addActionListener(listener);
+    }
+    void addDelListener(ActionListener listener) {
+        DelButton.addActionListener(listener);
+    }
+    void addShowListener(ActionListener listener) {
+        ShowButton.addActionListener(listener);
+    }
+    void addLogListener(ActionListener listener) {
+        LogButton.addActionListener(listener);
+    }
 
 
 
