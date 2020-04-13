@@ -1,18 +1,26 @@
 package app.service;
 
 import app.model.User;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Authenticator {
     private Storage storage;
-    private InformationShow viewController;
+    private View activeView;
     private Cryptographer crypto;
 
-    public Authenticator(InformationShow viewController){
-        this.storage = new Storage("db.txt");
-        this.viewController = viewController;
+    public Authenticator(View activeView){
+        this.storage = new Storage();
+        this.activeView = activeView;
         this.crypto = new Cryptographer();
     }
 
@@ -30,7 +38,7 @@ public class Authenticator {
         if (!shouldLogin.get()) {
             showMessage("Wrong username or password", "Failed Login");
         }
-        return  shouldLogin.get();
+        return shouldLogin.get();
     }
     // Registers a new user
     public void registerUser(String name, String email, String username, char[] password) {
@@ -38,12 +46,10 @@ public class Authenticator {
         if (!isUsernameAvailable(username)) {
             showMessage("Username already exists!", "Username Error");
         } else {
-            String hashedPassword = crypto.hash(password);
-            User newUser = new User(username, hashedPassword, name, email);
-            userList.add(newUser);
             try {
                 storage.saveUsers(userList);
-            } catch (IOException e) {
+                crypto.createKeyForUser(username);
+            } catch (IOException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | InvalidKeySpecException e) {
                 e.printStackTrace();
             }
         }
@@ -53,7 +59,7 @@ public class Authenticator {
     public ArrayList<User> getUsers() {
         try {
             return storage.readUsers();
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             // If file is not found return an empty array
             return new ArrayList<>();
         }
@@ -73,6 +79,6 @@ public class Authenticator {
     }
 
     void showMessage(String message, String title) {
-        viewController.showMessage(message,title);
+        activeView.showMessage(message,title);
     }
 }

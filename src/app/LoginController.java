@@ -1,11 +1,11 @@
 package app;
 
 import app.service.Authenticator;
-import app.service.InformationShow;
+import app.service.View;
 
 import java.awt.event.*;
 
-public class LoginController implements InformationShow {
+public class LoginController implements View {
     private LoginView view;
     private Authenticator authenticator;
 

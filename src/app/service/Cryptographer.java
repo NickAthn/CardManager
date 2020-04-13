@@ -1,25 +1,122 @@
 package app.service;
+import app.util.FileUtils;
 
-import javax.crypto.SecretKeyFactory;
+import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
+import java.io.*;
 import java.math.BigInteger;
-import java.security.Key;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.*;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class Cryptographer {
+    Storage storage = new Storage();
+    public static String privateKeyName = "app_rsa_private.der";
+    public String publicKeyName = "app_rsa.der";
 
-    void generateRSAkeyPair() throws NoSuchAlgorithmException {
+
+    public Cryptographer() {
+        // Check if RSA keypair is valid
+        if (!validateKeyPair()) {
+            // If its not valid generate a new one.
+            try {
+                generateRSAKeyPair();
+            } catch (NoSuchAlgorithmException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void createKeyForUser(String username) throws IllegalBlockSizeException, NoSuchAlgorithmException, IOException, BadPaddingException, NoSuchPaddingException, InvalidKeyException, InvalidKeySpecException {
+        SecretKey secretKey = generateAESKey();
+        // Getting the applications public key
+        PublicKey publicKey = readPublicKey(Storage.keysDir + publicKeyName);
+        // Encrypting the key
+        byte[] encryptedPrivateKey = encrypt(publicKey,secretKey.getEncoded());
+        // Saving the key
+        FileUtils.saveData(encryptedPrivateKey, Storage.keysDir + username + "_encrypted_secret.key");
+    }
+
+    public PublicKey readPublicKey(String filename) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(FileUtils.readFileBytes(filename));
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        return keyFactory.generatePublic(publicSpec);
+    }
+
+    public static PrivateKey readPrivateKey(String filename) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(FileUtils.readFileBytes(filename));
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        return keyFactory.generatePrivate(keySpec);
+    }
+    public byte[] encrypt(byte[] data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException, InvalidKeySpecException {
+        PublicKey key = readPublicKey(Storage.keysDir + publicKeyName);
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        return cipher.doFinal(data);
+    }
+    public byte[] encrypt(PublicKey key, byte[] data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        return cipher.doFinal(data);
+    }
+    public static byte[] decrypt(byte[] data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException, InvalidKeySpecException {
+        PrivateKey privateKey = readPrivateKey(Storage.keysDir + privateKeyName);
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        return cipher.doFinal(data);
+    }
+
+    public byte[] decrypt(PrivateKey key, byte[] data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        return cipher.doFinal(data);
+    }
+
+    public void generateRSAKeyPair() throws NoSuchAlgorithmException, IOException {
         KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
         kpg.initialize(2048);
         KeyPair kp = kpg.generateKeyPair();
         Key pub = kp.getPublic();
         Key pvt = kp.getPrivate();
 
+        storage.saveKey(pvt,privateKeyName);
+        storage.saveKey(pub,publicKeyName);
+    }
+
+    public SecretKey generateAESKey() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException {
+        KeyGenerator kgen = KeyGenerator.getInstance("AES");
+        kgen.init(128);
+        SecretKey secretKey = kgen.generateKey();
+        return secretKey;
+    }
+
+    public boolean validateKeyPair() {
+        try {
+            PublicKey publicKey = readPublicKey(Storage.keysDir + publicKeyName);
+            PrivateKey privateKey = readPrivateKey(Storage.keysDir +privateKeyName);
+            // create a challenge
+            byte[] challenge = new byte[10000];
+            ThreadLocalRandom.current().nextBytes(challenge);
+            // sign using the private key
+            Signature sig = Signature.getInstance("SHA256withRSA");
+            sig.initSign(privateKey);
+            sig.update(challenge);
+            byte[] signature = sig.sign();
+            // verify signature using the public key
+            sig.initVerify(publicKey);
+            sig.update(challenge);
+            return sig.verify(signature);
+        } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException | InvalidKeyException | SignatureException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     /**
      * Hash a password for storage.
@@ -27,7 +124,7 @@ public class Cryptographer {
      *
      * @return a secure authentication token to be stored for later authentication. Contains number of iterations and the salt used
      */
-    String hash(char[] password) {
+    public String hash(char[] password) {
         try {
             byte[] salt = getSalt();
             int iterations = 65536;

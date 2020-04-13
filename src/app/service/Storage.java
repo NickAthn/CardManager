@@ -1,35 +1,41 @@
 package app.service;
 import app.model.User;
+import app.util.FileUtils;
 
 import java.io.*;
+import java.security.Key;
 import java.util.ArrayList;
 
+/**
+ *
+ *  Storage is responsible for all the applications storage needs.
+ *
+ */
 public class Storage {
-    String dbPath;
+    final static private String dataDir = "Data/";
+    final static public String keysDir = dataDir + "Keys/";
+    final static public String dbPath =  dataDir + "userDatabase.txt";
 
-    public Storage(String dbPath){
-        // Check if DB file exists
-        this.dbPath = dbPath;
-
+    public Storage() {
+        // Creating the directories
+        FileUtils.createDirectory(dataDir);
+        FileUtils.createDirectory(keysDir);
     }
 
-    void saveUsers(ArrayList<User> usersList) throws IOException {
-        FileOutputStream fop = new FileOutputStream(dbPath);
-        ObjectOutputStream oos = new ObjectOutputStream(fop);
-        oos.writeObject(usersList);
+    public static void saveUsers(ArrayList<User> usersList) throws IOException {
+        FileUtils.saveObject(usersList, dbPath);
     }
 
-    ArrayList<User> readUsers() throws IOException {
-        FileInputStream fis = new FileInputStream(dbPath);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-
-        ArrayList<User> usersList = new ArrayList<>();
-        try {
-            usersList = (ArrayList<User>) ois.readObject();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return  usersList;
+    @SuppressWarnings("unchecked") // Suppress warning for unchecked cast
+    public ArrayList<User> readUsers() throws IOException, ClassNotFoundException {
+        return (ArrayList<User>) FileUtils.readObject(dbPath);
     }
 
+    public void saveKey(Key key, String title) throws IOException {
+        FileUtils.saveData(key.getEncoded(),keysDir + title);
+    }
+
+    public void saveFile(byte[] data, String filePath) {
+
+    }
 }

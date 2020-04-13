@@ -5,6 +5,6 @@ package app.service;
 * This way our classes can show alerts in an abstract way with out having to know where the alerts
 * are going to be displayed.
 */
-public interface InformationShow {
+public interface View {
     public void showMessage(String message, String title);
 }

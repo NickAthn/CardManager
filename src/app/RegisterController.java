@@ -1,12 +1,11 @@
 package app;
 
-import app.model.User;
 import app.service.Authenticator;
-import app.service.InformationShow;
+import app.service.View;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RegisterController implements InformationShow {
+public class RegisterController implements View {
     private RegisterView view;
     private Authenticator authenticator;
 
