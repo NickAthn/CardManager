@@ -1,6 +1,7 @@
 package app.service;
 
 import app.model.User;
+import app.util.PasswordUtils;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -11,7 +12,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -50,8 +50,8 @@ public class Authenticator {
         } else {
             try {
 
-                String hashedPassword = crypto.hash(password);
-
+                String hashedPassword = PasswordUtils.hash(password);
+                assert hashedPassword != null;
                 String encryptedPassword = Base64.getEncoder().encodeToString(crypto.encrypt(hashedPassword.getBytes(StandardCharsets.UTF_8)));
                 User newUser = new User(username, encryptedPassword, name, email);
                 userList.add(newUser);

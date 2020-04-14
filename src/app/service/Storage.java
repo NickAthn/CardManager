@@ -22,7 +22,7 @@ public class Storage {
         FileUtils.createDirectory(keysDir);
     }
 
-    public static void saveUsers(ArrayList<User> usersList) throws IOException {
+    public void saveUsers(ArrayList<User> usersList) throws IOException {
         FileUtils.saveObject(usersList, dbPath);
     }
 
