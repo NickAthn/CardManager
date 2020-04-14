@@ -1,11 +1,13 @@
 package app.service;
 
 import app.model.User;
+import app.util.PasswordUtils;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -47,6 +49,12 @@ public class Authenticator {
             showMessage("Username already exists!", "Username Error");
         } else {
             try {
+
+                String hashedPassword = PasswordUtils.hash(password);
+                assert hashedPassword != null;
+                String encryptedPassword = Base64.getEncoder().encodeToString(crypto.encrypt(hashedPassword.getBytes(StandardCharsets.UTF_8)));
+                User newUser = new User(username, encryptedPassword, name, email);
+                userList.add(newUser);
                 storage.saveUsers(userList);
                 crypto.createKeyForUser(username);
             } catch (IOException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | InvalidKeySpecException e) {

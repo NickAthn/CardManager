@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  */
 public class Storage {
-    final static private String dataDir = "Data/";
+    final static public String dataDir = "Data/";
     final static public String keysDir = dataDir + "Keys/";
     final static public String dbPath =  dataDir + "userDatabase.txt";
 
@@ -22,7 +22,7 @@ public class Storage {
         FileUtils.createDirectory(keysDir);
     }
 
-    public static void saveUsers(ArrayList<User> usersList) throws IOException {
+    public void saveUsers(ArrayList<User> usersList) throws IOException {
         FileUtils.saveObject(usersList, dbPath);
     }
 
