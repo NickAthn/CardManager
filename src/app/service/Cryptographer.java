@@ -5,6 +5,7 @@ import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
 import java.io.*;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -44,17 +45,18 @@ public class Cryptographer {
         FileUtils.saveData(encryptedPrivateKey, Storage.keysDir + username + "_encrypted_secret.key");
     }
 
-    public PublicKey readPublicKey(String filename) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(FileUtils.readFileBytes(filename));
+    public static PublicKey readPublicKey(String filename) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(FileUtils.readData(filename));
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         return keyFactory.generatePublic(publicSpec);
     }
 
     public static PrivateKey readPrivateKey(String filename) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(FileUtils.readFileBytes(filename));
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(FileUtils.readData(filename));
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         return keyFactory.generatePrivate(keySpec);
     }
+
     public byte[] encrypt(byte[] data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException, InvalidKeySpecException {
         PublicKey key = readPublicKey(Storage.keysDir + publicKeyName);
         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
@@ -148,7 +150,9 @@ public class Cryptographer {
      */
     public static boolean validatePassword(char[] originalPassword, String storedPassword) {
         try {
-            String[] parts = storedPassword.split(":");
+
+            String decryptedPassword = new String(decrypt(Base64.getDecoder().decode(storedPassword)), StandardCharsets.UTF_8);
+            String[] parts = decryptedPassword.split(":");
             int iterations = Integer.parseInt(parts[0]);
             byte[] salt = fromHex(parts[1]);
             byte[] hash = fromHex(parts[2]);
@@ -165,7 +169,18 @@ public class Cryptographer {
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
             return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
         }
+        return false;
     }
 
     /**

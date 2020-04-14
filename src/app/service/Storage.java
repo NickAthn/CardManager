@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  */
 public class Storage {
-    final static private String dataDir = "Data/";
+    final static public String dataDir = "Data/";
     final static public String keysDir = dataDir + "Keys/";
     final static public String dbPath =  dataDir + "userDatabase.txt";
 

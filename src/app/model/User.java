@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     // Properties
-    public String username; // Username must be unique and acts as and UUID
+    public String username; // Username must be unique and acts as UUID
     public String password;
     public String name;
     public String email;
