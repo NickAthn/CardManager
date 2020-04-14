@@ -97,10 +97,16 @@ public class LoginView {
     // View Methods
     void show() {
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
     void dispose() {
         frame.dispose();
     }
+
+    public void showMessage(String message, String titleBar) {
+        JOptionPane.showMessageDialog(null, message, titleBar, JOptionPane.INFORMATION_MESSAGE);
+    }
+
 }

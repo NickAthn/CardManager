@@ -1,13 +1,18 @@
 package app;
 
+import app.service.Authenticator;
+import app.service.View;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RegisterController {
+public class RegisterController implements View {
     private RegisterView view;
+    private Authenticator authenticator;
 
     RegisterController(RegisterView view) {
         this.view = view;
+        this.authenticator = new Authenticator(this);
+
         setupListeners();
     }
 
@@ -16,9 +21,15 @@ public class RegisterController {
         view.addCancelListener(new CancelButtonListener());
     }
 
-    static class RegisterButtonListener implements ActionListener {
+    public void showMessage(String message, String title) {
+        view.showMessage(message, title);
+    }
+    // Button Listeners
+    class RegisterButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
+            // TODO: Change Password implementation
+            authenticator.registerUser(view.getNameInput(),view.getEmailInput(),view.getUsernameInput(),view.getPasswordInput());
         }
     }
     class CancelButtonListener implements ActionListener {
@@ -27,4 +38,6 @@ public class RegisterController {
             view.dispose();
         }
     }
+
+
 }
