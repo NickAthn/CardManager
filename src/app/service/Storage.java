@@ -1,4 +1,5 @@
 package app.service;
+import app.model.Card;
 import app.model.User;
 import app.util.FileUtils;
 
@@ -14,16 +15,22 @@ import java.util.ArrayList;
 public class Storage {
     final static public String dataDir = "Data/";
     final static public String keysDir = dataDir + "Keys/";
+    final static public String cardsDir = dataDir + "Cards/";
     final static public String dbPath =  dataDir + "userDatabase.txt";
 
     public Storage() {
         // Creating the directories
         FileUtils.createDirectory(dataDir);
         FileUtils.createDirectory(keysDir);
+        FileUtils.createDirectory(cardsDir);
     }
 
     public void saveUsers(ArrayList<User> usersList) throws IOException {
         FileUtils.saveObject(usersList, dbPath);
+    }
+
+    public void saveCards(ArrayList<Card> cardsList)throws IOException {
+        FileUtils.saveObject(cardsList, cardsDir);
     }
 
     @SuppressWarnings("unchecked") // Suppress warning for unchecked cast

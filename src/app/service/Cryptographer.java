@@ -45,6 +45,11 @@ public class Cryptographer {
         PrivateKey key = CryptoUtils.readPrivateKey(Storage.keysDir + privateKeyName);
         return CryptoUtils.decrypt(key, data);
     }
+    public byte[] encrypt_aes(String username, byte[] data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException, InvalidKeySpecException {
+        SecretKey key = CryptoUtils.readSecretKey(Storage.keysDir + username + "_encrypted_secret.key" , Storage.keysDir + privateKeyName);
+        return CryptoUtils.encrypt(key, data);
+    }
+
 
     public void createAppKeyPair() throws IOException, NoSuchAlgorithmException {
         KeyPair keyPair = CryptoUtils.generateRSAKeyPair(2048);

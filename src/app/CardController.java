@@ -1,13 +1,19 @@
 package app;
 
+
+import app.service.CardManager;
+import app.service.View;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CardController {
+public class CardController implements View{
     private  CardView view;
+    private  CardManager cardmanager;
 
     CardController(CardView view) {
         this.view = view;
+        this.cardmanager = new CardManager(this);
         setupListeners();
     }
 
@@ -16,9 +22,14 @@ public class CardController {
         view.addBackListener(new BackButtonListener());
     }
 
-    static class AddButtonListener implements ActionListener {
+    @Override
+    public void showMessage(String message, String title) {
+        view.showMessage(message, title);
+    }
+
+    class AddButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Login Button Pressed");
+            cardmanager.addCard(view.getCardNumInput(),view.getCardUserInput(),view.getCardTypeInput(),view.getCardCvcInput(),view.getCardDateInput());
         }
     }
 

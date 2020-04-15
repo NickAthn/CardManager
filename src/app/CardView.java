@@ -1,5 +1,9 @@
 package app;
 
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -7,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 
 public class CardView {
@@ -15,6 +20,10 @@ public class CardView {
     private JTextField cardnumberField, carduserField;
     private JTextField cvcField, typeField;
     private JButton AddButton, backButton;
+    private UtilDateModel model;
+    private Properties p;
+    private JDatePanelImpl datePanel;
+    private JDatePickerImpl datePicker;
 
     public CardView() {
         setupComponents();
@@ -27,6 +36,14 @@ public class CardView {
         carduserField = new JTextField(16);
         cvcField = new JTextField(16);
         typeField = new JTextField(16);
+
+        model = new UtilDateModel();
+        p = new Properties();
+        p.put("text.today", "Today");
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
+        datePanel = new JDatePanelImpl(model, p);
+        datePicker = new JDatePickerImpl(datePanel, new CardView.DateLabelFormatter());
 
         AddButton = new JButton("Add");
         backButton = new JButton("Home");
@@ -100,15 +117,7 @@ public class CardView {
         gc.gridy = 2;
         panel.add(new JLabel("Date Exp. :"), gc);
         gc.gridx = 1;
-/*
-        UtilDateModel model = new UtilDateModel();
-        Properties p = new Properties();
-        p.put("text.today", "Today");
-        p.put("text.month", "Month");
-        p.put("text.year", "Year");
-        JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
-        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new CardView.DateLabelFormatter());*/
-        //panel.add(datePicker, gc);
+        panel.add(datePicker, gc);
 
         // Setting cvc field and label
         gc.gridx = 0;
@@ -143,11 +152,11 @@ public class CardView {
     }
 
     // Value Getters
-    //String getCardNumInput() { return usernameField.getText(); }
-    //String getCardUserInput() { return passwordField.getPassword(); }
-
-
-
+    String getCardNumInput() { return cardnumberField.getText(); }
+    String getCardUserInput() { return carduserField.getText(); }
+    String getCardTypeInput() { return typeField.getText(); }
+    String getCardCvcInput() { return cvcField.getText(); }
+    Date getCardDateInput() { return (Date) datePicker.getModel().getValue(); }
     // View Methods
     void show() {
         frame.pack();
@@ -156,5 +165,9 @@ public class CardView {
 
     void dispose() {
         frame.dispose();
+    }
+
+    public void showMessage(String message, String titleBar) {
+        JOptionPane.showMessageDialog(null, message, titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
 }
