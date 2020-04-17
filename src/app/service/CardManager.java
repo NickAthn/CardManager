@@ -21,12 +21,10 @@ import java.util.Date;
 
 public class CardManager {
     private Storage storage;
-    private View activeView;
     private Cryptographer crypto;
 
-    public CardManager(View activeView){
+    public CardManager(){
         this.storage = new Storage();
-        this.activeView = activeView;
         this.crypto = new Cryptographer();
     }
 
@@ -42,12 +40,12 @@ public class CardManager {
             oos.writeObject(newCard);
             oos.flush();
             data = bos.toByteArray();
-            Card encr_card = crypto.encrypt_aes(username, data);
+//            Card encr_card = crypto.encrypt_aes(username, data);
             //SealedObject sealedObject = new SealedObject( newCard, cipher);
             //cardList.add(newCard);
             //storage.saveCards(cardList);
 
-        } catch (IOException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | InvalidKeySpecException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

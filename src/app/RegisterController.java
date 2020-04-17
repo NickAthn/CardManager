@@ -7,12 +7,9 @@ import java.awt.event.ActionListener;
 
 public class RegisterController implements View {
     private RegisterView view;
-    private Authenticator authenticator;
 
     RegisterController(RegisterView view) {
         this.view = view;
-        this.authenticator = new Authenticator(this);
-
         setupListeners();
     }
 
@@ -29,7 +26,11 @@ public class RegisterController implements View {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             // TODO: Change Password implementation
-            authenticator.registerUser(view.getNameInput(),view.getEmailInput(),view.getUsernameInput(),view.getPasswordInput());
+            try {
+                Authenticator.getInstance().register(view.getNameInput(),view.getEmailInput(),view.getUsernameInput(),view.getPasswordInput());
+            } catch (Exception e) {
+                view.showMessage(e.getMessage(),"Failed to register");
+            }
         }
     }
     class CancelButtonListener implements ActionListener {

@@ -13,7 +13,7 @@ public class CardController implements View{
 
     CardController(CardView view) {
         this.view = view;
-        this.cardmanager = new CardManager(this);
+        this.cardmanager = new CardManager();
         setupListeners();
     }
 

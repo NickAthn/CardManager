@@ -1,17 +1,14 @@
 package app;
 
 import app.service.Authenticator;
-import app.service.View;
 
 import java.awt.event.*;
 
-public class LoginController implements View {
+public class LoginController {
     private LoginView view;
-    private Authenticator authenticator;
 
     LoginController(LoginView view) {
         this.view = view;
-        this.authenticator = new Authenticator(this);
         view.addLoginListener(new LoginButtonListener());
         view.addRegisterListener(new RegisterButtonListener());
     }
@@ -22,8 +19,14 @@ public class LoginController implements View {
 
     class LoginButtonListener implements  ActionListener {
         public void actionPerformed(ActionEvent e) {
-            // TODO: Change password implementation
-            authenticator.loginWith(view.getUsernameInput(),view.getPasswordInput());
+            try {
+                Authenticator.getInstance().authenticate(view.getUsernameInput(),view.getPasswordInput());
+                HomeView view = new HomeView();
+                HomeController controller = new HomeController(view);
+                view.show();
+            } catch (Exception ex) {
+                showMessage(ex.getMessage(),"Login Failed");
+            }
         }
     }
 
