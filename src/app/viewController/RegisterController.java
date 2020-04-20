@@ -1,11 +1,12 @@
-package app;
+package app.viewController;
 
 import app.service.Authenticator;
-import app.service.View;
+import app.view.RegisterView;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RegisterController implements View {
+public class RegisterController{
     private RegisterView view;
 
     RegisterController(RegisterView view) {

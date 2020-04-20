@@ -29,7 +29,7 @@ public class Authenticator {
     private Storage storage;
     private Cryptographer crypto;
 
-    User session; // The active user. if null then no user is logged.
+    public User session; // The active user. if null then no user is logged.
 
     // Login
     public void authenticate(String username, char[] password) throws Exception {

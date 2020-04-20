@@ -1,5 +1,7 @@
 package app.service;
 
+import app.viewController.ViewController;
+
 public class Router {
     // Declaring global instance (singleton)
     private static final Router instance = new Router();

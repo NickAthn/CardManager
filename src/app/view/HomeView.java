@@ -1,4 +1,4 @@
-package app;
+package app.view;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -8,7 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class HomeView {
+public class HomeView implements View {
     private JFrame frame;
     private JButton AddButton, ShowButton, EditButton, DelButton, LogButton;
 
@@ -82,19 +82,19 @@ public class HomeView {
         return panel;
     }
 
-    void addAddListener(ActionListener listener) {
+    public void addAddListener(ActionListener listener) {
         AddButton.addActionListener(listener);
     }
-    void addEditListener(ActionListener listener) {
+    public void addEditListener(ActionListener listener) {
         EditButton.addActionListener(listener);
     }
-    void addDelListener(ActionListener listener) {
+    public void addDelListener(ActionListener listener) {
         DelButton.addActionListener(listener);
     }
-    void addShowListener(ActionListener listener) {
+    public void addShowListener(ActionListener listener) {
         ShowButton.addActionListener(listener);
     }
-    void addLogListener(ActionListener listener) {
+    public void addLogListener(ActionListener listener) {
         LogButton.addActionListener(listener);
     }
 
@@ -103,10 +103,11 @@ public class HomeView {
     // View Methods
     public void show() {
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    void dispose() {
+    public void dispose() {
         frame.dispose();
     }
 }

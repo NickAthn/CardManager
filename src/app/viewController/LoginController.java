@@ -1,13 +1,16 @@
-package app;
+package app.viewController;
 
+import app.view.RegisterView;
 import app.service.Authenticator;
+import app.view.HomeView;
+import app.view.LoginView;
 
 import java.awt.event.*;
 
 public class LoginController {
     private LoginView view;
 
-    LoginController(LoginView view) {
+    public LoginController(LoginView view) {
         this.view = view;
         view.addLoginListener(new LoginButtonListener());
         view.addRegisterListener(new RegisterButtonListener());
@@ -24,6 +27,7 @@ public class LoginController {
                 HomeView view = new HomeView();
                 HomeController controller = new HomeController(view);
                 view.show();
+                disposeView();
             } catch (Exception ex) {
                 showMessage(ex.getMessage(),"Login Failed");
             }
@@ -37,4 +41,6 @@ public class LoginController {
             view.show();
         }
     }
+
+    private void disposeView(){ view.dispose(); }
 }

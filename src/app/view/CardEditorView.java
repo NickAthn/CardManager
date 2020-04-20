@@ -1,4 +1,4 @@
-package app;
+package app.view;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -14,7 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
-public class CardView {
+public class CardEditorView implements View {
 
     private JFrame frame;
     private JTextField cardnumberField, carduserField;
@@ -25,7 +25,7 @@ public class CardView {
     private JDatePanelImpl datePanel;
     private JDatePickerImpl datePicker;
 
-    public CardView() {
+    public CardEditorView() {
         setupComponents();
     }
 
@@ -43,7 +43,7 @@ public class CardView {
         p.put("text.month", "Month");
         p.put("text.year", "Year");
         datePanel = new JDatePanelImpl(model, p);
-        datePicker = new JDatePickerImpl(datePanel, new CardView.DateLabelFormatter());
+        datePicker = new JDatePickerImpl(datePanel, new CardEditorView.DateLabelFormatter());
 
         AddButton = new JButton("Add");
         backButton = new JButton("Home");
@@ -144,26 +144,26 @@ public class CardView {
         return panel;
     }
 
-    void addAddListener(ActionListener listener) {
+    public void addAddListener(ActionListener listener) {
         AddButton.addActionListener(listener);
     }
-    void addBackListener(ActionListener listener) {
+    public void addBackListener(ActionListener listener) {
         backButton.addActionListener(listener);
     }
 
     // Value Getters
-    String getCardNumInput() { return cardnumberField.getText(); }
-    String getCardUserInput() { return carduserField.getText(); }
-    String getCardTypeInput() { return typeField.getText(); }
-    String getCardCvcInput() { return cvcField.getText(); }
-    Date getCardDateInput() { return (Date) datePicker.getModel().getValue(); }
+    public String getCardNumInput() { return cardnumberField.getText(); }
+    public String getCardUserInput() { return carduserField.getText(); }
+    public String getCardTypeInput() { return typeField.getText(); }
+    public String getCardCvcInput() { return cvcField.getText(); }
+    public Date getCardDateInput() { return (Date) datePicker.getModel().getValue(); }
     // View Methods
-    void show() {
+    public void show() {
         frame.pack();
         frame.setVisible(true);
     }
 
-    void dispose() {
+    public void dispose() {
         frame.dispose();
     }
 

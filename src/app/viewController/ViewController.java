@@ -1,4 +1,4 @@
-package app.service;
+package app.viewController;
 
 public interface ViewController {
     void show();

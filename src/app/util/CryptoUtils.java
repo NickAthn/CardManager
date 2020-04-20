@@ -4,6 +4,7 @@ import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
+import java.io.Serializable;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
@@ -58,28 +59,10 @@ public class CryptoUtils {
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         return keyFactory.generatePrivate(keySpec);
     }
-    /**
-     * Reads an AES secret key
-     *
-     * @return SecretKey
-     * @param filename this is the full path of the key. ex: /Data/Keys/key_name_here.key
-     */
-    public static SecretKey readSecretKey(String filename, String filename1) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException {
-        //SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-        //KeySpec spec = new PBEKeySpec(password, salt, 65536, 256);
-        //SecretKey tmp = factory.generateSecret(spec);
-        //SecretKey secret = new SecretKeySpec(tmp.getEncoded(), "AES");
-
-        PrivateKey key = readPrivateKey(filename1);
-        byte[] data = FileUtils.readData(filename);
-        byte[] keyb = decrypt(key, data);
-        SecretKeySpec skey = new SecretKeySpec(keyb, "AES");
-        return skey;
-    }
 
 
-    
 
+    // Encryption/Decryption using RSA
     public static byte[] encrypt(PublicKey key, byte[] data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -90,6 +73,8 @@ public class CryptoUtils {
         cipher.init(Cipher.DECRYPT_MODE, key);
         return cipher.doFinal(data);
     }
+
+    // Encryption/Decryption using AES
     public static byte[] encrypt(SecretKey key, byte[] data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -99,6 +84,14 @@ public class CryptoUtils {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE, key);
         return cipher.doFinal(data);
+    }
+
+    // Encryption/Decryption using AES for objects
+    public static SealedObject encrypt(SecretKey key, Object obj) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException {
+        Cipher cipher = Cipher.getInstance( key.getAlgorithm() + "/CBC/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        // create sealed object
+        return new SealedObject((Serializable) obj, cipher);
     }
 
 

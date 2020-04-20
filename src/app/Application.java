@@ -1,6 +1,8 @@
 package app;
 
 import app.service.Cryptographer;
+import app.view.LoginView;
+import app.viewController.LoginController;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
