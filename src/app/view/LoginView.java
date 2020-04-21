@@ -1,11 +1,11 @@
-package app;
+package app.view;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class LoginView {
+public class LoginView implements View {
     private JFrame frame;
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -83,25 +83,25 @@ public class LoginView {
         return panel;
     }
     // Listener setters
-    void addLoginListener(ActionListener listener) {
+    public void addLoginListener(ActionListener listener) {
         loginButton.addActionListener(listener);
     }
-    void addRegisterListener(ActionListener listener) {
+    public void addRegisterListener(ActionListener listener) {
         registerButton.addActionListener(listener);
     }
 
     // Value Getters
-    String getUsernameInput() { return usernameField.getText(); }
-    char[] getPasswordInput() { return passwordField.getPassword(); }
+    public String getUsernameInput() { return usernameField.getText(); }
+    public char[] getPasswordInput() { return passwordField.getPassword(); }
 
     // View Methods
-    void show() {
+    public void show() {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    void dispose() {
+    public void dispose() {
         frame.dispose();
     }
 
