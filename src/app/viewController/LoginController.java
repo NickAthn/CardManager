@@ -1,11 +1,16 @@
 package app.viewController;
 
+import app.AppState;
+import app.model.User;
+import app.service.Storage;
+import app.service.security.RSACryptographer;
+import app.util.PasswordUtils;
 import app.view.RegisterView;
-import app.service.Authenticator;
 import app.view.HomeView;
 import app.view.LoginView;
 
 import java.awt.event.*;
+import java.util.Base64;
 
 public class LoginController {
     private LoginView view;
@@ -20,21 +25,34 @@ public class LoginController {
         view.showMessage(message, title);
     }
 
-    class LoginButtonListener implements  ActionListener {
+    class LoginButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             try {
-                Authenticator.getInstance().authenticate(view.getUsernameInput(),view.getPasswordInput());
-                HomeView view = new HomeView();
-                HomeController controller = new HomeController(view);
-                view.show();
-                disposeView();
+                Storage storage = AppState.getInstance().getStorage();
+                RSACryptographer rsa = AppState.getInstance().getAppCryptographer();
+
+                User user = storage.readUser(view.getUsernameInput());
+                if (user == null) throw new Exception("Username doesn't exist"); // Auth failed
+                String hashedPassword = new String(rsa.decrypt(Base64.getDecoder().decode(user.password), RSACryptographer.USE_PRIVATE_KEY));
+                if (PasswordUtils.validatePassword(view.getPasswordInput(), hashedPassword)) {
+                    // Authentication Successful
+                    AppState.getInstance().setSession(user);
+                    HomeView view = new HomeView();
+                    HomeController controller = new HomeController(view);
+                    view.show();
+                    disposeView();
+                } else {
+                    // Auth failed
+                    throw new Exception("Password is incorrect");
+                }
             } catch (Exception ex) {
-                showMessage(ex.getMessage(),"Login Failed");
+                // Auth failed
+                showMessage(ex.getMessage(), "Login Failed");
             }
         }
     }
 
-    static  class RegisterButtonListener implements  ActionListener {
+    static class RegisterButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) { // Upon register button press show registerView
             RegisterView view = new RegisterView();
             RegisterController controller = new RegisterController(view);
@@ -42,5 +60,7 @@ public class LoginController {
         }
     }
 
-    private void disposeView(){ view.dispose(); }
+    private void disposeView() {
+        view.dispose();
+    }
 }

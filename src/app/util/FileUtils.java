@@ -7,31 +7,6 @@ import java.nio.file.Paths;
 
 public class FileUtils {
     /**
-     * Checks if the target directory exists and if not creates it.
-     *
-     * @param targetDirectoryName
-     */
-    public static void createDirectory(String targetDirectoryName) {
-        // Get working directory
-        Path workingPath = Paths.get("");
-        // Convert working directory format to String
-        String workingPathString = workingPath.toAbsolutePath().toString();
-        // Construct target directory path
-        String fullPath = workingPathString + "/" + targetDirectoryName;
-        File targetDirectory = new File(fullPath);
-
-        // Check if directory exists, if not create tt
-        if (!targetDirectory.exists()) {
-            System.out.println("[+] Creating directory: " + targetDirectory.getName());
-            try {
-                targetDirectory.mkdir();
-            } catch(SecurityException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
      * Saves an object locally to any given path
      *
      * @param obj the object to save

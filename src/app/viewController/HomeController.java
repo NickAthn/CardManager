@@ -1,7 +1,9 @@
 package app.viewController;
 
-import app.service.Authenticator;
+import app.AppState;
 import app.service.Storage;
+import app.service.security.AESCryptographer;
+import app.service.security.RSACryptographer;
 import app.view.CardEditorView;
 import app.view.HomeView;
 
@@ -10,11 +12,19 @@ import java.awt.event.ActionListener;
 
 public class HomeController {
     private HomeView view;
-    private Storage storage;
 
     public HomeController(HomeView view) {
         this.view = view;
-        this.storage = new Storage(Authenticator.getInstance().session);
+        try {
+            Storage storage = AppState.getInstance().getStorage();
+            RSACryptographer rsa = AppState.getInstance().getAppCryptographer();
+            byte[] encryptedKeyBytes = storage.readUserKeyBytes(AppState.getInstance().getSession().getUsername());
+            byte[] keyBytes = rsa.decrypt(encryptedKeyBytes, RSACryptographer.USE_PRIVATE_KEY);
+            AESCryptographer userCrypto = new AESCryptographer(keyBytes);
+            AppState.getInstance().setUserCryptographer(userCrypto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         setupListeners();
     }
 
@@ -31,7 +41,7 @@ public class HomeController {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             CardEditorView view = new CardEditorView();
-            CardEditorController controller = new CardEditorController(view,storage);
+            CardEditorController controller = new CardEditorController(view);
             view.show();
         }
     }

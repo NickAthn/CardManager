@@ -1,5 +1,7 @@
 package app.service.security;
 
+import app.util.FileUtils;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -40,7 +42,25 @@ public class RSACryptographer {
         this.privateKey = keyPair.getPrivate();
         this.publicKey = keyPair.getPublic();
     }
-
+    // Try to read keys from given paths if not found create new keys and save them to the given paths
+    public RSACryptographer(String privateKeyPath, String publicKeyPath) throws IOException {
+        PublicKey publicKey;
+        PrivateKey privateKey;
+        try {
+            publicKey = RSACryptographer.readPublicKey(publicKeyPath);
+            privateKey = RSACryptographer.readPrivateKey(privateKeyPath);
+        } catch (InvalidKeySpecException | IOException e) {
+            e.printStackTrace();
+            KeyPair keyPair = generateKeyPair();
+            assert keyPair != null;
+            privateKey = keyPair.getPrivate();
+            publicKey = keyPair.getPublic();
+        }
+        this.privateKey = privateKey;
+        this.publicKey = publicKey;
+        savePublicKey(publicKeyPath);
+        savePrivateKey(privateKeyPath);
+    }
 
 
     private KeyPair generateKeyPair() {

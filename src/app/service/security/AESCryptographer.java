@@ -23,13 +23,16 @@ public class AESCryptographer {
     public AESCryptographer(String keyPath) throws IOException {
         this.secretKey = loadKey(keyPath);
     }
+    public AESCryptographer(byte[] keyBytes) {
+        secretKey = new SecretKeySpec(keyBytes, "AES");
+    }
     // Generate New key
     public AESCryptographer() {
         this.secretKey = generateKey();
     }
     // Create key from bytes() ?
 
-    private SecretKey generateKey() {
+    public static SecretKey generateKey() {
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
             keyGenerator.init(ALGORITHM_KEY_SIZE);
