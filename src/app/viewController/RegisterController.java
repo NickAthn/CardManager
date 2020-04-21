@@ -5,7 +5,7 @@ import app.model.User;
 import app.service.Storage;
 import app.service.security.AESCryptographer;
 import app.service.security.RSACryptographer;
-import app.util.PasswordUtils;
+import app.service.security.PasswordUtils;
 import app.view.RegisterView;
 
 import javax.crypto.SecretKey;

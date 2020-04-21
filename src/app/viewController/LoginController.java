@@ -4,7 +4,7 @@ import app.AppState;
 import app.model.User;
 import app.service.Storage;
 import app.service.security.RSACryptographer;
-import app.util.PasswordUtils;
+import app.service.security.PasswordUtils;
 import app.view.RegisterView;
 import app.view.HomeView;
 import app.view.LoginView;
