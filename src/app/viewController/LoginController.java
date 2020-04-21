@@ -1,6 +1,7 @@
 package app.viewController;
 
 import app.AppState;
+import app.Application;
 import app.model.User;
 import app.service.Storage;
 import app.service.security.RSACryptographer;

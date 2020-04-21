@@ -1,6 +1,7 @@
 package app.viewController;
 
 import app.AppState;
+import app.Application;
 import app.service.Storage;
 import app.service.security.AESCryptographer;
 import app.service.security.RSACryptographer;
@@ -22,6 +23,9 @@ public class HomeController {
             byte[] keyBytes = rsa.decrypt(encryptedKeyBytes, RSACryptographer.USE_PRIVATE_KEY);
             AESCryptographer userCrypto = new AESCryptographer(keyBytes);
             AppState.getInstance().setUserCryptographer(userCrypto);
+            if (!Application.integrityCheck()) {
+                System.out.println("FILES HAVE BEEN TEMPERED WITH");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
