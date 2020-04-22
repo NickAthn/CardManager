@@ -99,7 +99,6 @@ public class HomeView implements View {
     }
 
 
-
     // View Methods
     public void show() {
         frame.pack();
@@ -110,5 +109,10 @@ public class HomeView implements View {
     public void dispose() {
         frame.dispose();
     }
+
+    public void showMessage(String message, String titleBar) {
+        JOptionPane.showMessageDialog(null, message, titleBar, JOptionPane.WARNING_MESSAGE);
+    }
+
 }
 

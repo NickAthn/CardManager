@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class HomeController {
-    private HomeView view;
+    private final HomeView view;
 
     public HomeController(HomeView view) {
         this.view = view;
@@ -24,7 +24,8 @@ public class HomeController {
             AESCryptographer userCrypto = new AESCryptographer(keyBytes);
             AppState.getInstance().setUserCryptographer(userCrypto);
             if (!Application.integrityCheck()) {
-                System.out.println("FILES HAVE BEEN TEMPERED WITH");
+                System.out.println("FILES HAVE BEEN TEMPERED!");
+                view.showMessage("FILES HAVE BEEN TEMPERED!","WARNING");
             }
         } catch (Exception e) {
             e.printStackTrace();
