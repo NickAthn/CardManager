@@ -1,10 +1,10 @@
-package app;
+package app.view;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class RegisterView {
+public class RegisterView implements View {
     private JFrame frame;
 
     private JTextField nameField = new JTextField(16);
@@ -66,18 +66,18 @@ public class RegisterView {
         frame.add(registerButton, gc);
     }
     // Listener setters
-    void addCancelListener(ActionListener listener) {
+    public void addCancelListener(ActionListener listener) {
         cancelButton.addActionListener(listener);
     }
-    void addRegisterListener(ActionListener listener) {
+    public void addRegisterListener(ActionListener listener) {
         registerButton.addActionListener(listener);
     }
 
     // Value Getters
-    String getNameInput() { return nameField.getText(); }
-    String getEmailInput() { return  emailField.getText(); }
-    String getUsernameInput() { return usernameField.getText(); }
-    char[] getPasswordInput() { return passwordField.getPassword(); }
+    public String getNameInput() { return nameField.getText(); }
+    public String getEmailInput() { return  emailField.getText(); }
+    public String getUsernameInput() { return usernameField.getText(); }
+    public char[] getPasswordInput() { return passwordField.getPassword(); }
 
     // View Methods
     public void show() {
