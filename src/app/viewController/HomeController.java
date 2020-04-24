@@ -4,10 +4,7 @@ import app.AppState;
 import app.service.Storage;
 import app.service.security.AESCryptographer;
 import app.service.security.RSACryptographer;
-import app.view.CardEditorView;
-import app.view.HomeView;
-import app.view.RemoveView;
-import app.view.ShowView;
+import app.view.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,9 +54,9 @@ public class HomeController {
     static class EditButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            //RegisterView view = new RegisterView();
-            //RegisterController controller = new RegisterController(view);
-            //view.show();
+            EditView view = new EditView();
+            EditController controller = new EditController(view);
+            view.show();
         }
     }
     static class DelButtonListener implements ActionListener {

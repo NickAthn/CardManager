@@ -2,21 +2,15 @@ package app.view;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-
-
-public class ShowView implements View {
+public class EditView implements View {
     private JFrame frame;
-    private JTextField typeField;
-    private JButton showButton, backButton;
-    public DefaultTableModel listModel;
-    public JTable table;
+    private JTextField typeField, cardnumField;
+    private JButton editButton, backButton;
 
-
-    public ShowView() {
+    public EditView() {
         setupComponents();
     }
 
@@ -24,55 +18,36 @@ public class ShowView implements View {
     private void setupComponents() {
         // Initializing Propeties/Views
         typeField = new JTextField(16);
+        cardnumField = new JTextField(16);
 
-        showButton = new JButton("Show");
+        editButton = new JButton("Edit");
         backButton = new JButton("Home");
 
 
-        table = new JTable();
-
-        table.setModel(new DefaultTableModel());
-
-        listModel = (DefaultTableModel)table.getModel();
-        listModel.addColumn("CardNumber");
-        listModel.addColumn("CardHolder");
-        listModel.addColumn("Type");
-        listModel.addColumn("Exp. Date");
-        listModel.addColumn("CVC");
-        table.getColumnModel().getColumn(0).setPreferredWidth(100);
-        table.getColumnModel().getColumn(3).setPreferredWidth(150);
-
-
-
-        //table.setModel(listModel);
-
-        frame = new JFrame("Show");
+        frame = new JFrame("Edit");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 
         // Set constraints and add subviews
         frame.setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
         gc.fill = GridBagConstraints.HORIZONTAL;
-        gc.insets = new Insets(10, 10, 10, 10);
+        gc.insets = new Insets(5, 5, 5, 5);
 
         gc.gridx = 0;
         gc.gridy = 0;
-        frame.add(createShowPanel(), gc);
-
+        frame.add(createRemovePanel(), gc);
 
     }
 
-    private JPanel createShowPanel() {
+    private JPanel createRemovePanel() {
         JPanel panel = new JPanel(new GridBagLayout());
 
-        Border border = BorderFactory.createTitledBorder("Show");
+        Border border = BorderFactory.createTitledBorder("Edit");
         panel.setBorder(border);
-
 
         GridBagConstraints gc = new GridBagConstraints();
         gc.fill = GridBagConstraints.HORIZONTAL;
-        gc.insets = new Insets(10, 10, 10, 10);
+        gc.insets = new Insets(5, 5, 5, 5);
 
         // Setting type field and label
         gc.gridx = 0;
@@ -81,28 +56,26 @@ public class ShowView implements View {
         gc.gridx = 1;
         panel.add(typeField, gc);
 
-        // Setting buttons
+        // Setting cardnumber field and label
         gc.gridx = 0;
         gc.gridy = 1;
-        panel.add(backButton, gc);
+        panel.add(new JLabel("Card Number:"), gc);
         gc.gridx = 1;
-        panel.add(showButton, gc);
+        panel.add(cardnumField, gc);
 
-        // Setting listview
+        // Setting buttons
         gc.gridx = 0;
         gc.gridy = 2;
-        panel.add(new JLabel("CardList:"), gc);
+        panel.add(backButton, gc);
         gc.gridx = 1;
-        panel.add(table, gc);
+        panel.add(editButton, gc);
 
         return panel;
     }
 
-
-
     // Listener setters
-    public void addShowListener(ActionListener listener) {
-        showButton.addActionListener(listener);
+    public void addEditListener(ActionListener listener) {
+        editButton.addActionListener(listener);
     }
     public void addBackListener(ActionListener listener) {
         backButton.addActionListener(listener);
@@ -110,6 +83,7 @@ public class ShowView implements View {
 
     // Value Getters
     public String getTypeInput() { return typeField.getText(); }
+    public String getCardNumInput() { return cardnumField.getText(); }
 
     // View Methods
     public void show() {
