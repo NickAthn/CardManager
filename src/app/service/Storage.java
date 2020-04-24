@@ -76,11 +76,13 @@ public class Storage {
     }
 
     // CARDS CRUD
-    public void createCard(Card card){
-
+    public void createCard(Card card, String username) throws IOException {
+        //ArrayList<Card> allCards = readCards(username);
+        //allCards.add(card);
+        //FileUtils.saveObject(allCards,getCardPath(username) + "userCards.txt");
     }
-    public Card readCard(String type, String number){
-        ArrayList<Card> allCards = readCards();
+    public Card readCard(String type, String number, String username){
+        ArrayList<Card> allCards = readCards(username);
         for (Card card : allCards) {
             if (card.getNumber().equals(number) && card.getType().equals(type)) {
                 return card;
@@ -89,8 +91,8 @@ public class Storage {
         return null;
 
     }
-    public Card readCard(String type){
-        ArrayList<Card> allCards = readCards();
+    public Card readCard(String type, String username){
+        ArrayList<Card> allCards = readCards(username);
         for (Card card : allCards) {
             if (card.getType().equals(type)) {
                 return card;
@@ -101,12 +103,13 @@ public class Storage {
     public void updateCard(String cardNumber){
 
     }
-    public void deleteCard(String cardNumber, String type) throws IOException{
-        ArrayList<Card> allCards = readCards();
+    public void deleteCard(String cardNumber, String type, String username) throws IOException{
+        ArrayList<Card> allCards = readCards(username);
+        System.out.println(allCards);
         for (Card card : allCards) {
             if (card.getType().equals(type) && card.getNumber().equals(cardNumber)) {
                 allCards.remove(card);
-                FileUtils.saveObject(allCards,cardsPath);
+                FileUtils.saveObject(allCards,getCardPath(username));
             }
         }
 
@@ -139,9 +142,9 @@ public class Storage {
     }
 
     @SuppressWarnings("unchecked") // Suppress warning for unchecked cast
-    public ArrayList<Card> readCards()  {
+    public ArrayList<Card> readCards(String username)  {
         try {
-            return (ArrayList<Card>) FileUtils.readObject(cardsPath);
+            return (ArrayList<Card>) FileUtils.readObject(getCardPath(username) );
         } catch (ClassNotFoundException | IOException e) {
             return new ArrayList<>();
         }

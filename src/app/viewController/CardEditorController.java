@@ -44,7 +44,6 @@ public class CardEditorController {
                         .forEach( path -> {
                             try {
                                 Card card = (Card) aes.decryptAndDeserialize(new FileInputStream(path.toString()));
-                                System.out.println(card.getCardholder() + " // " + card.getType());
                             } catch (IOException er) {
                                 er.printStackTrace();
                             }

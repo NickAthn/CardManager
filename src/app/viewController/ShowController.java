@@ -40,10 +40,10 @@ public class ShowController {
             try{
                 AESCryptographer aes = AppState.getInstance().getUserCryptographer();
                 Storage storage = AppState.getInstance().getStorage();
-                if (storage.readCard(view.getTypeInput()) == null ){
+               /* if (storage.readCard(view.getTypeInput()) == null ){
                     showMessage("Failed.","Card does not exist.");
-                }
-                else{
+                }*/
+                //else{
                     Files.walk(Paths.get(Storage.getCardsDir(AppState.getInstance().getSession().getUsername())))
                             .filter(Files::isRegularFile)
                             .forEach( path -> {
@@ -56,7 +56,7 @@ public class ShowController {
                                     er.printStackTrace();
                                 }
                             } );
-                }
+                //}
             } catch (Exception e) {
                 e.printStackTrace();
                 showMessage(e.getMessage(),"Failed to show the cards.");
