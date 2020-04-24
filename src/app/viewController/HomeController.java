@@ -1,6 +1,7 @@
 package app.viewController;
 
 import app.AppState;
+import app.Application;
 import app.service.Storage;
 import app.service.security.AESCryptographer;
 import app.service.security.RSACryptographer;
@@ -11,7 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class HomeController {
-    private HomeView view;
+    private final HomeView view;
 
     public HomeController(HomeView view) {
         this.view = view;
@@ -22,6 +23,9 @@ public class HomeController {
             byte[] keyBytes = rsa.decrypt(encryptedKeyBytes, RSACryptographer.USE_PRIVATE_KEY);
             AESCryptographer userCrypto = new AESCryptographer(keyBytes);
             AppState.getInstance().setUserCryptographer(userCrypto);
+            if (!Application.integrityCheck()) {
+                view.showMessage("FILES HAVE BEEN TEMPERED!","WARNING");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

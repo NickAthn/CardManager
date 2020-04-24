@@ -1,4 +1,5 @@
 package app.service;
+import app.AppState;
 import app.model.Card;
 import app.model.User;
 import app.service.security.AESCryptographer;
@@ -87,6 +88,23 @@ public class Storage {
     }
     public void deleteCard(String cardNumber){
 
+    }
+
+    public ArrayList<Card> readAllCards() throws Exception {
+        ArrayList<Card> allCards = new ArrayList<>();
+        Files.walk(Paths.get(Storage.getCardsDir(AppState.getInstance().getSession().getUsername())))
+                .filter(Files::isRegularFile)
+                .forEach( path -> {
+                    try {
+                        AESCryptographer aes = AppState.getInstance().getUserCryptographer();
+                        Card card = (Card) aes.decryptAndDeserialize(new FileInputStream(path.toString()));
+                        allCards.add(card);
+                        System.out.println(card.getCardholder() + " // " + card.getType());
+                    } catch (Exception er) {
+                        er.printStackTrace();
+                    }
+                } );
+        return allCards;
     }
 
     // User Encrypted Keys
