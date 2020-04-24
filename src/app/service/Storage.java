@@ -79,13 +79,36 @@ public class Storage {
     public void createCard(Card card){
 
     }
-    public Card readCard(){
+    public Card readCard(String type, String number){
+        ArrayList<Card> allCards = readCards();
+        for (Card card : allCards) {
+            if (card.getNumber().equals(number) && card.getType().equals(type)) {
+                return card;
+            }
+        }
+        return null;
+
+    }
+    public Card readCard(String type){
+        ArrayList<Card> allCards = readCards();
+        for (Card card : allCards) {
+            if (card.getType().equals(type)) {
+                return card;
+            }
+        }
         return null;
     }
     public void updateCard(String cardNumber){
 
     }
-    public void deleteCard(String cardNumber){
+    public void deleteCard(String cardNumber, String type) throws IOException{
+        ArrayList<Card> allCards = readCards();
+        for (Card card : allCards) {
+            if (card.getType().equals(type) && card.getNumber().equals(cardNumber)) {
+                allCards.remove(card);
+                FileUtils.saveObject(allCards,cardsPath);
+            }
+        }
 
     }
 

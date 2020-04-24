@@ -6,6 +6,8 @@ import app.service.security.AESCryptographer;
 import app.service.security.RSACryptographer;
 import app.view.CardEditorView;
 import app.view.HomeView;
+import app.view.RemoveView;
+import app.view.ShowView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,16 +65,18 @@ public class HomeController {
     static class DelButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            //RegisterView view = new RegisterView();
-            //RegisterController controller = new RegisterController(view);
-            //view.show();
+            RemoveView view = new RemoveView();
+            RemoveController controller = new RemoveController(view);
+            view.show();
 
         }
     }
     static class ShowButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-
+            ShowView view = new ShowView();
+            ShowController controller = new ShowController(view);
+            view.show();
         }
     }
 

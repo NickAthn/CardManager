@@ -37,14 +37,14 @@ public class HomeView implements View {
 
         gc.gridx = 0;
         gc.gridy = 0;
-        frame.add(createAddPanel(), gc);
+        frame.add(createLoginPanel(), gc);
 
 
     }
 
 
 
-    private JPanel createAddPanel() {
+    private JPanel createLoginPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
 
         Border border = BorderFactory.createTitledBorder("Home");

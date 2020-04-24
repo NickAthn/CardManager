@@ -1,16 +1,19 @@
-package app;
+package app.view;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class RemoveView {
+public class ShowView implements View {
     private JFrame frame;
-    private JTextField typeField, cardnumField;
-    private JButton removeButton, backButton;
+    private JTextField typeField;
+    private JButton showButton, backButton;
+    public DefaultListModel listModel;
+    private JList list;
+    private JScrollPane listScroller;
 
-    public RemoveView() {
+    public ShowView() {
         setupComponents();
     }
 
@@ -18,13 +21,19 @@ public class RemoveView {
     private void setupComponents() {
         // Initializing Propeties/Views
         typeField = new JTextField(16);
-        cardnumField = new JTextField(16);
 
-        removeButton = new JButton("Remove");
+        showButton = new JButton("Show");
         backButton = new JButton("Home");
 
+        listModel = new DefaultListModel();
+        list = new JList(listModel);
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        list.setVisibleRowCount(-1);
+        listScroller = new JScrollPane(list);
+        listScroller.setPreferredSize(new Dimension(250,80));
 
-        frame = new JFrame("Remove");
+        frame = new JFrame("Show");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Set constraints and add subviews
@@ -35,63 +44,63 @@ public class RemoveView {
 
         gc.gridx = 0;
         gc.gridy = 0;
-        frame.add(createRemovePanel(), gc);
+        frame.add(createShowPanel(), gc);
 
     }
 
-    private JPanel createRemovePanel() {
+    private JPanel createShowPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
 
-        Border border = BorderFactory.createTitledBorder("Remove");
+        Border border = BorderFactory.createTitledBorder("Show");
         panel.setBorder(border);
 
         GridBagConstraints gc = new GridBagConstraints();
         gc.fill = GridBagConstraints.HORIZONTAL;
         gc.insets = new Insets(5, 5, 5, 5);
 
-        // Setting username field and label
+        // Setting type field and label
         gc.gridx = 0;
         gc.gridy = 0;
         panel.add(new JLabel("Type:"), gc);
         gc.gridx = 1;
         panel.add(typeField, gc);
 
-        // Setting password field and label
+        // Setting buttons
         gc.gridx = 0;
         gc.gridy = 1;
-        panel.add(new JLabel("Card Number:"), gc);
-        gc.gridx = 1;
-        panel.add(cardnumField, gc);
-
-        gc.gridx = 0;
-        gc.gridy = 2;
         panel.add(backButton, gc);
         gc.gridx = 1;
-        panel.add(removeButton, gc);
+        panel.add(showButton, gc);
+
+        // Setting listview
+        gc.gridx = 0;
+        gc.gridy = 2;
+        panel.add(new JLabel("CardList:"), gc);
+        gc.gridx = 1;
+        panel.add(list, gc);
 
         return panel;
     }
 
     // Listener setters
-    void addRemoveListener(ActionListener listener) {
-        removeButton.addActionListener(listener);
+    public void addShowListener(ActionListener listener) {
+        showButton.addActionListener(listener);
     }
-    void addBackListener(ActionListener listener) {
+    public void addBackListener(ActionListener listener) {
         backButton.addActionListener(listener);
     }
 
     // Value Getters
-    String getTypeInput() { return typeField.getText(); }
-    String getCardNumInput() { return cardnumField.getText(); }
+    public String getTypeInput() { return typeField.getText(); }
 
     // View Methods
-    void show() {
+    public void show() {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    void dispose() {
+    public void dispose() {
         frame.dispose();
     }
 
