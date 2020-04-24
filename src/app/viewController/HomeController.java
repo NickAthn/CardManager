@@ -24,7 +24,6 @@ public class HomeController {
             AESCryptographer userCrypto = new AESCryptographer(keyBytes);
             AppState.getInstance().setUserCryptographer(userCrypto);
             if (!Application.integrityCheck()) {
-                System.out.println("FILES HAVE BEEN TEMPERED!");
                 view.showMessage("FILES HAVE BEEN TEMPERED!","WARNING");
             }
         } catch (Exception e) {

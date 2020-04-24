@@ -44,8 +44,7 @@ public class SecurityUtils {
     public static String GetMD5HashOfString  (String str) {
         MessageDigest md5 ;
         StringBuilder hexString = new StringBuilder();
-        try
-        {
+        try {
             md5 = MessageDigest.getInstance("SHA-256");
             md5.reset();
             md5.update(str.getBytes());
@@ -94,4 +93,6 @@ public class SecurityUtils {
         }
         return hexString.toString();
     }
+
+
 }
