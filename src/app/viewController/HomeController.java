@@ -32,9 +32,9 @@ public class HomeController {
 
     void setupListeners() {
         view.addAddListener(new AddButtonListener());
-        view.addEditListener(new ShowButtonListener());
-        view.addDelListener(new EditButtonListener());
-        view.addShowListener(new DelButtonListener());
+        view.addEditListener(new EditButtonListener());
+        view.addDelListener(new DelButtonListener());
+        view.addShowListener(new ShowButtonListener());
         view.addLogListener(new LogoutButtonListener());
 
     }
