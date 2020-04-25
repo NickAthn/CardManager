@@ -64,6 +64,8 @@ public class CardEditorView implements View {
         frame.add(createAddPanel(), gc);
 
 
+
+
     }
 
     //function which is able to present correctly the selected Date
@@ -169,6 +171,7 @@ public class CardEditorView implements View {
     // View Methods
     public void show() {
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 

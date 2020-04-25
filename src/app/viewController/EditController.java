@@ -11,6 +11,7 @@ import app.view.ShowView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,12 +23,11 @@ public class EditController {
 
     EditController(CardEditorView view) {
         this.view = view;
-
         setupListeners();
     }
 
     void setupListeners() {
-        //view.addEditListener(new EditController.EditButtonListener());
+        view.addAddListener(new EditController.EditButtonListener());
         view.addBackListener(new EditController.BackButtonListener());
     }
 
@@ -38,15 +38,23 @@ public class EditController {
     class EditButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            try{
-                CardEditorView view = new CardEditorView();
+                try {
+                    Card newCard = new Card(view.getCardTypeInput(),view.getCardNumInput(),view.getCardUserInput(),view.getCardCvcInput(),view.getCardDateInput());
+                    AESCryptographer aes = AppState.getInstance().getUserCryptographer();
 
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                showMessage(e.getMessage(),"Failed to show the cards.");
-            }
-
+                    Files.walk(Paths.get(Storage.getCardsDir(AppState.getInstance().getSession().getUsername())))
+                            .filter(Files::isRegularFile)
+                            .forEach( path -> {
+                                try {
+                                    Card card = (Card) aes.decryptAndDeserialize(new FileInputStream(path.toString()));
+                                    //aes.encryptAndSerialize(newCard,new FileOutputStream(Storage.getCardPath(AppState.getInstance().getSession().getUsername())));
+                                } catch (IOException er) {
+                                    er.printStackTrace();
+                                }
+                            } );
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
 
         }
     }

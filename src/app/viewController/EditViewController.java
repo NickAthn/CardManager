@@ -15,6 +15,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -51,15 +53,18 @@ public class EditViewController {
                             try {
                                 //decrypt every card
                                 Card card = (Card) aes.decryptAndDeserialize(new FileInputStream(path.toString()));
-
+                                //if card type and number inputs are equals with card's elements in card directory
+                                //set the values in the fields
                                 if (card.getType().equals(view.getTypeInput()) && card.getNumber().equals(view.getCardNumInput())) {
 
                                     view1.setCardnumberField(card.getNumber());
                                     view1.setCardcvcField(card.getCvc());
                                     view1.setCardtypeField(card.getType());
                                     view1.setCarduserField(card.getCardholder());
+                                    DateFormat dateFormat = new SimpleDateFormat("MM/yyyy");
                                     Date day = card.getExpirationDate();
-                                    view1.setCarddateField(day.getDay(),day.getMonth(),day.getYear());
+                                    String date = dateFormat.format(day);
+                                    view1.setCarddateField(date);
                                     view1.show();
                                 }
                             } catch (IOException er) {
