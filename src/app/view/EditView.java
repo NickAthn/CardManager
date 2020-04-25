@@ -85,6 +85,7 @@ public class EditView implements View {
     public String getTypeInput() { return typeField.getText(); }
     public String getCardNumInput() { return cardnumField.getText(); }
 
+
     // View Methods
     public void show() {
         frame.pack();

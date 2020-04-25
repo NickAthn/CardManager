@@ -55,7 +55,7 @@ public class HomeController {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             EditView view = new EditView();
-            EditController controller = new EditController(view);
+            EditViewController controller = new EditViewController(view);
             view.show();
         }
     }

@@ -4,6 +4,7 @@ import app.AppState;
 import app.model.Card;
 import app.service.Storage;
 import app.service.security.AESCryptographer;
+import app.view.CardEditorView;
 import app.view.EditView;
 import app.view.ShowView;
 
@@ -16,17 +17,17 @@ import java.nio.file.Paths;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class EditController {
-    private EditView view;
+    private CardEditorView view;
 
 
-    EditController(EditView view) {
+    EditController(CardEditorView view) {
         this.view = view;
 
         setupListeners();
     }
 
     void setupListeners() {
-        view.addEditListener(new EditController.EditButtonListener());
+        //view.addEditListener(new EditController.EditButtonListener());
         view.addBackListener(new EditController.BackButtonListener());
     }
 
@@ -38,7 +39,8 @@ public class EditController {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             try{
-                AESCryptographer aes = AppState.getInstance().getUserCryptographer();
+                CardEditorView view = new CardEditorView();
+
 
             } catch (Exception e) {
                 e.printStackTrace();

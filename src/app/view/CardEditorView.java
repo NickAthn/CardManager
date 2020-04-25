@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
@@ -157,6 +158,14 @@ public class CardEditorView implements View {
     public String getCardTypeInput() { return typeField.getText(); }
     public String getCardCvcInput() { return cvcField.getText(); }
     public Date getCardDateInput() { return (Date) datePicker.getModel().getValue(); }
+
+    //Setters
+    public void setCardnumberField(String cardnum){ cardnumberField.setText(cardnum);}
+    public void setCarduserField(String cardus){ carduserField.setText(cardus);}
+    public void setCardcvcField(String cardcvc){ cvcField.setText(cardcvc);}
+    public void setCardtypeField(String cardtype){ typeField.setText(cardtype);}
+    public void setCarddateField(String date){ datePicker.getJFormattedTextField().setText(date);}
+
     // View Methods
     public void show() {
         frame.pack();
