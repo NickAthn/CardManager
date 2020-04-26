@@ -12,7 +12,6 @@ public class ShowView implements View {
     private JFrame frame;
     private JTextField typeField;
     private JButton showButton, backButton;
-    public DefaultTableModel listModel;
     public JTable table;
 
 
@@ -28,27 +27,15 @@ public class ShowView implements View {
         showButton = new JButton("Show");
         backButton = new JButton("Home");
 
-
-        table = new JTable();
-
-        table.setModel(new DefaultTableModel());
-
-        listModel = (DefaultTableModel)table.getModel();
-        listModel.addColumn("CardNumber");
-        listModel.addColumn("CardHolder");
-        listModel.addColumn("Type");
-        listModel.addColumn("Exp. Date");
-        listModel.addColumn("CVC");
-        table.getColumnModel().getColumn(0).setPreferredWidth(100);
-        table.getColumnModel().getColumn(3).setPreferredWidth(150);
-
-
-
-        //table.setModel(listModel);
+        String[] columnNames = { "Card Number", "Cardholder", "Type", "Exp. Date", "CVC" };
+        String[][] emptyData = {};
+        table = new JTable(new DefaultTableModel(emptyData,columnNames));
+        table.getColumnModel().getColumn(4).setPreferredWidth(50);
+        table.setDefaultEditor(Object.class, null);
 
         frame = new JFrame("Show");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+        frame.setSize(500,200);
 
         // Set constraints and add subviews
         frame.setLayout(new GridBagLayout());
@@ -59,8 +46,6 @@ public class ShowView implements View {
         gc.gridx = 0;
         gc.gridy = 0;
         frame.add(createShowPanel(), gc);
-
-
     }
 
     private JPanel createShowPanel() {
@@ -91,9 +76,8 @@ public class ShowView implements View {
         // Setting listview
         gc.gridx = 0;
         gc.gridy = 2;
-        panel.add(new JLabel("CardList:"), gc);
-        gc.gridx = 1;
-        panel.add(table, gc);
+        gc.gridwidth = 2;
+        panel.add(new JScrollPane(table), gc);
 
         return panel;
     }
