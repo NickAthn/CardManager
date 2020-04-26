@@ -24,8 +24,8 @@ public class Application {
 
     public static void main(String[] args) throws IOException {
         // Getting the cryptographer ready
-        AppState.getInstance().setAppCryptographer(new RSACryptographer(privateKeyPath,publicKeyPath));
         AppState.getInstance().setStorage(new Storage());
+        AppState.getInstance().setAppCryptographer(new RSACryptographer(privateKeyPath,publicKeyPath));
 
         LoginView view = new LoginView();
         LoginController controller = new LoginController(view);
