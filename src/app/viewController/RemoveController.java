@@ -6,25 +6,18 @@ import app.service.Storage;
 import app.service.security.AESCryptographer;
 import app.view.RemoveView;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.BaseStream;
-import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class RemoveController {
     private RemoveView view;
 
-
-
     RemoveController(RemoveView view) {
         this.view = view;
-
         setupListeners();
     }
 
@@ -40,47 +33,31 @@ public class RemoveController {
      class RemoveButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            try{
+            AtomicBoolean isFound = new AtomicBoolean(false);
+            try {
                 AESCryptographer aes = AppState.getInstance().getUserCryptographer();
-                AtomicReference<Path> cardpath = new AtomicReference<>();
-
-
                 Files.walk(Paths.get(Storage.getCardsDir(AppState.getInstance().getSession().getUsername())))
                         .filter(Files::isRegularFile)
-                        .forEach( path -> {
+                        .forEach(path -> {
                             try {
                                 Card card = (Card) aes.decryptAndDeserialize(new FileInputStream(path.toString()));
+                                System.out.println(card.getNumber());
                                 if (card.getType().equals(view.getTypeInput()) && card.getNumber().equals(view.getCardNumInput())) {
-                                    cardpath.set(path);
-                                    showMessage("Card Removed","Success");
+                                    Files.deleteIfExists(path);
+                                    isFound.set(true);
+                                    showMessage("Card removed.","Successful!");
                                 }
-
-
-                            } catch (IOException er) {
+                            } catch (Exception er) {
                                 er.printStackTrace();
-                            }  catch (Exception e) {
-                                e.printStackTrace();
                             }
-
-                        } );
-
-                Files.deleteIfExists(cardpath.get());
-
-
-
-
-
-
+                        });
             } catch (Exception e) {
                 e.printStackTrace();
-                showMessage(e.getMessage(),"Failed to remove the card.");
             }
-
-
-
+            if (!isFound.get()) showMessage("Failed to remove the card.", "Failed");
         }
+     }
 
-        }
     class BackButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {

@@ -101,6 +101,7 @@ public class AESCryptographer {
         SealedObject sealedObject;
         try {
             sealedObject = (SealedObject) inputStream.readObject();
+            inputStream.close();
             return sealedObject.getObject(cipher);
         } catch (ClassNotFoundException | IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
