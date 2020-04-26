@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
@@ -50,7 +51,7 @@ public class CardEditorView implements View {
 
 
         frame = new JFrame("Add");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Set constraints and add subviews
         frame.setLayout(new GridBagLayout());
@@ -61,6 +62,8 @@ public class CardEditorView implements View {
         gc.gridx = 0;
         gc.gridy = 0;
         frame.add(createAddPanel(), gc);
+
+
 
 
     }
@@ -157,9 +160,18 @@ public class CardEditorView implements View {
     public String getCardTypeInput() { return typeField.getText(); }
     public String getCardCvcInput() { return cvcField.getText(); }
     public Date getCardDateInput() { return (Date) datePicker.getModel().getValue(); }
+
+    //Setters
+    public void setCardnumberField(String cardnum){ cardnumberField.setText(cardnum);}
+    public void setCarduserField(String cardus){ carduserField.setText(cardus);}
+    public void setCardcvcField(String cardcvc){ cvcField.setText(cardcvc);}
+    public void setCardtypeField(String cardtype){ typeField.setText(cardtype);}
+    public void setCarddateField(String date){ datePicker.getJFormattedTextField().setText(date);}
+
     // View Methods
     public void show() {
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 

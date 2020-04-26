@@ -5,8 +5,7 @@ import app.Application;
 import app.service.Storage;
 import app.service.security.AESCryptographer;
 import app.service.security.RSACryptographer;
-import app.view.CardEditorView;
-import app.view.HomeView;
+import app.view.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,9 +33,9 @@ public class HomeController {
 
     void setupListeners() {
         view.addAddListener(new AddButtonListener());
-        view.addEditListener(new ShowButtonListener());
-        view.addDelListener(new EditButtonListener());
-        view.addShowListener(new DelButtonListener());
+        view.addEditListener(new EditButtonListener());
+        view.addDelListener(new DelButtonListener());
+        view.addShowListener(new ShowButtonListener());
         view.addLogListener(new LogoutButtonListener());
 
     }
@@ -59,24 +58,26 @@ public class HomeController {
     static class EditButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            //RegisterView view = new RegisterView();
-            //RegisterController controller = new RegisterController(view);
-            //view.show();
+            EditView view = new EditView();
+            EditViewController controller = new EditViewController(view);
+            view.show();
         }
     }
     static class DelButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            //RegisterView view = new RegisterView();
-            //RegisterController controller = new RegisterController(view);
-            //view.show();
+            RemoveView view = new RemoveView();
+            RemoveController controller = new RemoveController(view);
+            view.show();
 
         }
     }
     static class ShowButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-
+            ShowView view = new ShowView();
+            ShowController controller = new ShowController(view);
+            view.show();
         }
     }
 

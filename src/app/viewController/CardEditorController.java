@@ -39,16 +39,6 @@ public class CardEditorController {
             try {
                 AESCryptographer aes = AppState.getInstance().getUserCryptographer();
                 aes.encryptAndSerialize(newCard,new FileOutputStream(Storage.getCardPath(AppState.getInstance().getSession().getUsername())));
-                Files.walk(Paths.get(Storage.getCardsDir(AppState.getInstance().getSession().getUsername())))
-                        .filter(Files::isRegularFile)
-                        .forEach( path -> {
-                            try {
-                                Card card = (Card) aes.decryptAndDeserialize(new FileInputStream(path.toString()));
-                                System.out.println(card.getCardholder() + " // " + card.getType());
-                            } catch (IOException er) {
-                                er.printStackTrace();
-                            }
-                        } );
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

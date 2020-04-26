@@ -18,7 +18,7 @@ public class CardsListView implements View {
 
     public void show() {
         frame.pack();
-        frame.setLocationRelativeTo(null);
+
         frame.setVisible(true);
     }
 
