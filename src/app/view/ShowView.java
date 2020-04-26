@@ -40,11 +40,13 @@ public class ShowView implements View {
         // Set constraints and add subviews
         frame.setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
-        gc.fill = GridBagConstraints.HORIZONTAL;
+        gc.fill = GridBagConstraints.BOTH;
         gc.insets = new Insets(10, 10, 10, 10);
 
         gc.gridx = 0;
         gc.gridy = 0;
+        gc.weightx = 1.0;
+        gc.weighty = 1.0;
         frame.add(createShowPanel(), gc);
     }
 
@@ -76,13 +78,14 @@ public class ShowView implements View {
         // Setting listview
         gc.gridx = 0;
         gc.gridy = 2;
+        gc.weightx = 1.0;
+        gc.weighty = 1.0;
+        gc.fill = GridBagConstraints.BOTH;
         gc.gridwidth = 2;
         panel.add(new JScrollPane(table), gc);
 
         return panel;
     }
-
-
 
     // Listener setters
     public void addShowListener(ActionListener listener) {
