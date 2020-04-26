@@ -94,7 +94,7 @@ public class CardEditorView implements View {
     private JPanel createAddPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
 
-        Border border = BorderFactory.createTitledBorder("Add");
+        Border border = BorderFactory.createTitledBorder("Save");
         panel.setBorder(border);
 
         GridBagConstraints gc = new GridBagConstraints();
@@ -162,11 +162,12 @@ public class CardEditorView implements View {
     public Date getCardDateInput() { return (Date) datePicker.getModel().getValue(); }
 
     //Setters
-    public void setCardnumberField(String cardnum){ cardnumberField.setText(cardnum);}
-    public void setCarduserField(String cardus){ carduserField.setText(cardus);}
-    public void setCardcvcField(String cardcvc){ cvcField.setText(cardcvc);}
-    public void setCardtypeField(String cardtype){ typeField.setText(cardtype);}
-    public void setCarddateField(String date){ datePicker.getJFormattedTextField().setText(date);}
+    public void setNumberField(String cardnum){ cardnumberField.setText(cardnum);}
+    public void setCardholderField(String cardus){ carduserField.setText(cardus);}
+    public void setCVCField(String cardcvc){ cvcField.setText(cardcvc);}
+    public void setTypeField(String cardtype){ typeField.setText(cardtype);}
+    public void setExpirationDateField(String date){ datePicker.getJFormattedTextField().setText(date);}
+
 
     // View Methods
     public void show() {

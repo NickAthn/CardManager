@@ -9,18 +9,28 @@ import app.service.Storage;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 
 public class CardEditorController {
     private CardEditorView view;
+    private Card card;
 
     public CardEditorController(CardEditorView view)  {
         this.view = view;
+        card = new Card();
+        setupListeners();
+    }
+    public CardEditorController(Card card, CardEditorView view) {
+        this.card = card;
+        this.view = view;
+        this.view.setCVCField(card.getCvc());
+        this.view.setExpirationDateField(card.getExpirationDate().toString());
+        this.view.setNumberField(card.getNumber());
+        this.view.setTypeField(card.getType());
+        this.view.setCardholderField(card.getCardholder());
         setupListeners();
     }
 
@@ -35,10 +45,17 @@ public class CardEditorController {
 
     class AddButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            Card newCard = new Card(view.getCardTypeInput(),view.getCardNumInput(),view.getCardUserInput(),view.getCardCvcInput(),view.getCardDateInput());
+            card.setCardholder(view.getCardUserInput());
+            card.setCvc(view.getCardCvcInput());
+            card.setExpirationDate(view.getCardDateInput());
+            card.setNumber(view.getCardNumInput());
+            card.setType(view.getCardTypeInput());
+
             try {
+                Files.deleteIfExists(Paths.get(Storage.getCardsDir(AppState.getInstance().getSession().getUsername()) + card.getId()));
+
                 AESCryptographer aes = AppState.getInstance().getUserCryptographer();
-                aes.encryptAndSerialize(newCard,new FileOutputStream(Storage.getCardPath(AppState.getInstance().getSession().getUsername())));
+                aes.encryptAndSerialize(card,new FileOutputStream(Storage.getCardsDir(AppState.getInstance().getSession().getUsername()) + card.getId()));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

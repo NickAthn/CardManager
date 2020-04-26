@@ -6,9 +6,7 @@ import app.service.Storage;
 import app.service.security.AESCryptographer;
 import app.view.CardEditorView;
 import app.view.EditView;
-import app.view.ShowView;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
@@ -18,7 +16,6 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class EditViewController {
     private EditView view;
@@ -43,9 +40,6 @@ public class EditViewController {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             try{
-                CardEditorView view1 = new CardEditorView();
-                EditController controller = new EditController(view1);
-
                 AESCryptographer aes = AppState.getInstance().getUserCryptographer();
                 Files.walk(Paths.get(Storage.getCardsDir(AppState.getInstance().getSession().getUsername())))
                         .filter(Files::isRegularFile)
@@ -56,29 +50,17 @@ public class EditViewController {
                                 //if card type and number inputs are equals with card's elements in card directory
                                 //set the values in the fields
                                 if (card.getType().equals(view.getTypeInput()) && card.getNumber().equals(view.getCardNumInput())) {
-
-                                    view1.setCardnumberField(card.getNumber());
-                                    view1.setCardcvcField(card.getCvc());
-                                    view1.setCardtypeField(card.getType());
-                                    view1.setCarduserField(card.getCardholder());
-                                    DateFormat dateFormat = new SimpleDateFormat("MM/yyyy");
-                                    Date day = card.getExpirationDate();
-                                    String date = dateFormat.format(day);
-                                    view1.setCarddateField(date);
-                                    view1.show();
+                                    CardEditorView view = new CardEditorView();
+                                    CardEditorController controller = new CardEditorController(card, view);
+                                    view.show();
                                 }
                             } catch (IOException er) {
                                 er.printStackTrace();
                             }
                         } );
-
-
             } catch (Exception e) {
                 e.printStackTrace();
-                showMessage(e.getMessage(),"Failed to show the cards.");
             }
-
-
         }
     }
     class BackButtonListener implements ActionListener {
