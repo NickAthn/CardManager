@@ -46,11 +46,11 @@ public class CardEditorView implements View {
         datePanel = new JDatePanelImpl(model, p);
         datePicker = new JDatePickerImpl(datePanel, new CardEditorView.DateLabelFormatter());
 
-        AddButton = new JButton("Add");
+        AddButton = new JButton("Save");
         backButton = new JButton("Home");
 
 
-        frame = new JFrame("Add");
+        frame = new JFrame("Card Editor");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Set constraints and add subviews
