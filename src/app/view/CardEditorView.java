@@ -51,7 +51,7 @@ public class CardEditorView implements View {
 
 
         frame = new JFrame("Add");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Set constraints and add subviews
         frame.setLayout(new GridBagLayout());

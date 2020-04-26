@@ -47,7 +47,7 @@ public class ShowView implements View {
         //table.setModel(listModel);
 
         frame = new JFrame("Show");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 
         // Set constraints and add subviews

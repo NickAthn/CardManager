@@ -25,7 +25,7 @@ public class EditView implements View {
 
 
         frame = new JFrame("Edit");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Set constraints and add subviews
         frame.setLayout(new GridBagLayout());
