@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     // Properties
-    public String username; // Username must be unique and acts as UUID
-    public String password;
-    public String name;
-    public String email;
+    private String username; // Username must be unique and acts as UUID
+    private String password;
+    private String name;
+    private String email;
 
     public User(String username, String password, String name, String email) {
         this.username = username;

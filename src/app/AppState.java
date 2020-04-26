@@ -4,12 +4,15 @@ import app.model.User;
 import app.service.Storage;
 import app.service.security.AESCryptographer;
 import app.service.security.RSACryptographer;
-
+/**
+ * AppState is responsible for holding all the variables and data that need to be consistent throughout the run of the application
+ */
 public class AppState {
     private RSACryptographer appCryptographer;
     private AESCryptographer userCryptographer;
     private Storage storage;
 
+    // If a user is logged this will hold the user else it will be null
     private User activeSession;
 
     // Singleton Pattern
@@ -19,6 +22,7 @@ public class AppState {
     }
     private AppState(){}
 
+    // Getters
     public User getSession() throws Exception {
         if (activeSession == null) throw new Exception("No active session found.");
         return activeSession;
@@ -37,6 +41,7 @@ public class AppState {
         return storage;
     }
 
+    // Setters
     public void setSession(User user) { this.activeSession = user; }
     public void setAppCryptographer(RSACryptographer rsa) { this.appCryptographer = rsa; }
     public void setUserCryptographer(AESCryptographer aes) { this.userCryptographer = aes; }

@@ -19,7 +19,11 @@ public class SecurityUtils {
         sr.nextBytes(salt);
         return salt;
     }
-
+    /**
+     * One-Way Hashing function using SHA-256
+     *
+     * @return hashed bytes
+     */
     public static String hash(byte[] bytes) throws NoSuchAlgorithmException {
 //        byte[] salt = getSalt();
         final MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -27,7 +31,11 @@ public class SecurityUtils {
         final byte[] hashedBytes = md.digest(bytes);
         return bytesToHex(hashedBytes);
     }
-
+    /**
+     * Generates a directory checksum using hasing with sha-256
+     *
+     * @return hashed bytes
+     */
     public static String getDirectoryChecksum(String dir) throws IOException, NoSuchAlgorithmException {
         String hash = "";
         File folder = new File(dir);
@@ -40,7 +48,6 @@ public class SecurityUtils {
         hash = GetMD5HashOfString(hash);
         return hash;
     }
-    // TODO: Figure out this part
     public static String GetMD5HashOfString  (String str) {
         MessageDigest md5 ;
         StringBuilder hexString = new StringBuilder();
@@ -56,6 +63,11 @@ public class SecurityUtils {
         } catch (Throwable e) {e.printStackTrace();}
         return hexString.toString();
     }
+    /**
+     * Generates a file checksum using hasing with sha-256
+     *
+     * @return hashed bytes
+     */
     private static String getFileChecksum(File file) throws IOException, NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         //Get file input stream for reading the file content
@@ -83,7 +95,11 @@ public class SecurityUtils {
         //return complete hash
         return sb.toString();
     }
-
+    /**
+     * Converts a Hex string to a byte array.
+     *
+     * @return byte[]
+     */
     private static String bytesToHex(byte[] bytes) {
         StringBuilder hexString = new StringBuilder();
         for (byte b : bytes) {

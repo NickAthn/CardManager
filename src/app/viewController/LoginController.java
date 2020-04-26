@@ -34,7 +34,7 @@ public class LoginController {
 
                 User user = storage.readUser(view.getUsernameInput());
                 if (user == null) throw new Exception("Username doesn't exist"); // Auth failed
-                String hashedPassword = new String(rsa.decrypt(Base64.getDecoder().decode(user.password), RSACryptographer.USE_PRIVATE_KEY));
+                String hashedPassword = new String(rsa.decrypt(Base64.getDecoder().decode(user.getPassword()), RSACryptographer.USE_PRIVATE_KEY));
                 if (PasswordUtils.validatePassword(view.getPasswordInput(), hashedPassword)) {
                     // Authentication Successful
                     AppState.getInstance().setSession(user);

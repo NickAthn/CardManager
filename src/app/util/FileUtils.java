@@ -32,14 +32,23 @@ public class FileUtils {
         ois.close();
         return obj;
     }
-
-    public static void saveData(byte[] data, String filePath) throws IOException {
+    /**
+     * Saves bytes to a file
+     *
+     * @param filePath the path to write to
+     */
+    public static void saveBytes(byte[] data, String filePath) throws IOException {
         FileOutputStream out = new FileOutputStream(filePath);
         out.write(data);
         out.close();
     }
-
-    public static byte[] readData(String filePath) throws IOException {
+    /**
+     * Reads bytes from file
+     *
+     * @param filePath the path to read from
+     * @return byte[] from the file read
+     */
+    public static byte[] readBytes(String filePath) throws IOException {
         Path path = Paths.get(filePath);
         return Files.readAllBytes(path);
     }

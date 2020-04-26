@@ -6,6 +6,10 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+/**
+ * Passwords utils should be prefered over security utils when working with password
+ *
+ */
 
 public class PasswordUtils {
     /**
